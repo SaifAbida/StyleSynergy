@@ -1,31 +1,23 @@
 import { Product } from "../modules/productModule";
 import { Request, Response } from "express";
+import { MongooseQueryParser } from "mongoose-query-parser";
 
 export class ManageProducts {
   static async getProducts(req: Request, res: Response) {
     try {
       const totalElements = await Product.countDocuments();
-      // FILTERING :
-      let queryString = JSON.stringify(req.query);
-      queryString = queryString.replace(
-        /\b(gte|gt|lte|lt)\b/g,
-        (match) => `$${match}`
-      );
-      const queryObject = JSON.parse(queryString);
-      let query = Product.find(queryObject);
-      // SORTING :
-      if (req.query.sort) {
-        const sortBy = (req.query.sort as string).split(",").join(" ");
-        query = query.sort(sortBy);
-      }
-      //PAGINATION
-      const page = (req.query.page as any) * 1 || 1;
-      const limit = (req.query.limit as any) * 1 || 12;
+      const parser = new MongooseQueryParser();
+      const parsed = parser.parse(req.query);
+      const page = Number(req.query.skip) || 1;
+      const limit = Number(req.query.limit) | 12;
       const totalPages = Math.ceil(totalElements / limit);
       const skip = (page - 1) * limit;
-      query = query.skip(skip).limit(limit);
+      const products = await Product.find(parsed.filter)
+        .skip(skip)
+        .sort(parsed.sort)
+        .limit(limit)
+        .select(parsed.select);
 
-      const products = await query;
       res.status(200).send({
         totalPages,
         products,
