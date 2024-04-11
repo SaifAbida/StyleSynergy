@@ -12,7 +12,6 @@ export class ManageProducts {
       const limit = Number(req.query.limit) || 12;
       const totalPages = Math.ceil(totalElements / limit);
       const skip = (page - 1) * limit;
-      console.log(parsed.limit)
       const products = await Product.find(parsed.filter)
         .skip(skip)
         .sort(parsed.sort)
