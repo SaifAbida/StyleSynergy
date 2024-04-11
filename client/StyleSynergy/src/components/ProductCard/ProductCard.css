@@ -1,0 +1,16 @@
+.card {
+  /* Assuming the card class is from ProductCard.css */
+  width: calc(
+    33.33% - 40px
+  ); /* Adjust based on desired product width and margin */
+  margin: 10px 40px; /* Adjust margin as needed */
+}
+
+.cardContainer {
+  margin: auto 30px;
+}
+
+p {
+  font-weight: bold;
+  padding-left: 10px;
+}

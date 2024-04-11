@@ -1,0 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+#home {
+  overflow: hidden;
+  width: 100%;
+}

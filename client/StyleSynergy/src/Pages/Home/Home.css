@@ -1,0 +1,16 @@
+.best-sellers {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#best-sellers {
+    background-color: hsla(0, 0%, 97%, 0.8); 
+}
+
+.sellers-title {
+    color: hsla(0, 0%, 18%, 0.8); 
+    font-weight: bold;
+    font-size: 100px;
+    margin: 10px 10px 10px 70px;
+    font-family: 'Oswald', sans-serif;
+}
