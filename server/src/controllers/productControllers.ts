@@ -9,9 +9,10 @@ export class ManageProducts {
       const parser = new MongooseQueryParser();
       const parsed = parser.parse(req.query);
       const page = Number(req.query.skip) || 1;
-      const limit = Number(req.query.limit) | 12;
+      const limit = Number(req.query.limit) || 12;
       const totalPages = Math.ceil(totalElements / limit);
       const skip = (page - 1) * limit;
+      console.log(parsed.limit)
       const products = await Product.find(parsed.filter)
         .skip(skip)
         .sort(parsed.sort)
