@@ -32,17 +32,7 @@ export class ManageCart {
           quantity: req.body.quantity || 1,
         });
       }
-
-      //Calcuate TotalCart :
-      const productsID = user.cart.map((element) => element.productId);
-
-      const products = await Promise.all(
-        productsID.map((id) => Product.findById(id))
-      );
-      let calculateTotal = 0;
-      products.map((product) => (calculateTotal += product.price));
-      user.totalCart = calculateTotal;
-
+      
       await user.save();
       res.status(200).send(user.cart);
     } catch (error) {
@@ -77,7 +67,22 @@ export class ManageCart {
       if (!user) {
         return res.status(404).send("User not found");
       }
-      res.status(200).send(user.cart);
+      //Calcuate TotalCart :
+
+      const products = await Promise.all(
+        user.cart.map(async (p) => {
+          const product = await Product.findById(p.productId);
+          return { product, quantity: p.quantity };
+        })
+      );
+
+      const total = products.reduce((acc, p) => {
+        return acc + p.product.price * p.quantity;
+      }, 0);
+
+      user.totalCart = total;
+
+      res.status(200).send({ cart: products, totalCart: user.totalCart });
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
