@@ -5,9 +5,9 @@ import { MongooseQueryParser } from "mongoose-query-parser";
 export class ManageProducts {
   static async getProducts(req: Request, res: Response) {
     try {
-      const totalElements = await Product.countDocuments();
       const parser = new MongooseQueryParser();
       const parsed = parser.parse(req.query);
+      const totalElements = await Product.countDocuments(parsed.filter);
       const page = Number(req.query.skip) || 1;
       const limit = Number(req.query.limit) || 12;
       const totalPages = Math.ceil(totalElements / limit);
