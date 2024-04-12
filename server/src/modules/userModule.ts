@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    totalCart: { type: Number, default: 0 },
     orders: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
       default: [],

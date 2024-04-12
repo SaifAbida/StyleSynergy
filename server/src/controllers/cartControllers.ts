@@ -1,6 +1,7 @@
 import { AuthentificatedRequest } from "../Authentificated Request/AuthentificatedRequest";
 import { User } from "../modules/userModule";
 import { Response } from "express";
+import { Product } from "../modules/productModule";
 import mongoose from "mongoose";
 interface CartItem {
   productId: mongoose.Types.ObjectId;
@@ -31,6 +32,16 @@ export class ManageCart {
           quantity: req.body.quantity || 1,
         });
       }
+
+      //Calcuate TotalCart :
+      const productsID = user.cart.map((element) => element.productId);
+
+      const products = await Promise.all(
+        productsID.map((id) => Product.findById(id))
+      );
+      let calculateTotal = 0;
+      products.map((product) => (calculateTotal += product.price));
+      user.totalCart = calculateTotal;
 
       await user.save();
       res.status(200).send(user.cart);

@@ -13,21 +13,16 @@ export class ManageOrders {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      const productsID = user.cart.map((element) => element.productId);
-
-      const products = await Promise.all(
-        productsID.map((id) => Product.findById(id))
-      );
-      let calculateTotal = 0;
-      products.map((product) => (calculateTotal += product.price));
       const newOrder = new Order({
         userID: user._id,
         products: user.cart,
-        total: calculateTotal,
+        total: user.totalCart,
         shipping,
         status: "pending",
       });
+
       user.cart.splice(0, user.cart.length);
+      user.totalCart = 0;
       const savedOrder = await newOrder.save();
       user.orders.push(savedOrder._id);
       await user.save();
