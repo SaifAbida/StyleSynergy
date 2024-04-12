@@ -7,6 +7,7 @@ import Women from "./Pages/Women/Women";
 import Children from "./Pages/Children/Children";
 import Register from "./Pages/Register/Register";
 import Login from "./Pages/Login/Login";
+import Settings from "./Pages/Settings/Settings";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/children" element={<Children />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
       <Footer />
     </BrowserRouter>

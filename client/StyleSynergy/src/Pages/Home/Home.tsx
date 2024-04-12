@@ -4,6 +4,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
 import { Product } from "../../Types/Types";
 import axios, { AxiosResponse } from "axios";
+import { Skeleton } from "@mui/material";
 
 const Home = () => {
   const [bestSellers, setBestSellers] = useState<Product[]>([]);
@@ -39,10 +40,15 @@ const Home = () => {
       <section id="best-sellers">
         <p className="sellers-title">Best Sellers :</p>
         <div className="best-sellers">
-          {bestSellers.length === 0 ? (
-            <p>Loading best sellers...</p>
-          ) : (
-            bestSellers.map((product) => (
+          {bestSellers.map((product) =>
+            !product ? (
+              <>
+                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+                <Skeleton variant="rectangular" width={210} height={60} />
+                <Skeleton variant="rounded" width={210} height={60} />
+              </>
+            ) : (
               <ProductCard
                 key={product._id}
                 id={product._id}
@@ -51,17 +57,22 @@ const Home = () => {
                 category={product.category}
                 price={product.price}
               />
-            ))
+            )
           )}
         </div>
       </section>
       <section id="onsale">
         <p className="sellers-title">On-sale deals :</p>
         <div className="best-sellers">
-          {onSale.length === 0 ? (
-            <p>Loading best sellers...</p>
-          ) : (
-            onSale.map((product) => (
+          {onSale.map((product) =>
+            !product ? (
+              <>
+                <Skeleton variant="circular" width={40} height={40} />
+                <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+                <Skeleton variant="rectangular" width={210} height={60} />
+                <Skeleton variant="rounded" width={210} height={60} />
+              </>
+            ) : (
               <ProductCard
                 key={product._id}
                 id={product._id}
@@ -70,7 +81,7 @@ const Home = () => {
                 category={product.category}
                 price={product.price}
               />
-            ))
+            )
           )}
         </div>
       </section>

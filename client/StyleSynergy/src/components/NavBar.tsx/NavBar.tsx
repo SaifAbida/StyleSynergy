@@ -2,6 +2,7 @@ import "./NavBar.css";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Cart from "../Cart/Cart";
 
 const NavBar = () => {
   const token = localStorage.getItem("token");
@@ -46,9 +47,11 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              {token && <i className="fa-solid fa-cart-shopping"></i>}
-            </li>
+            {token && (
+              <li className="nav-item">
+                <Cart />
+              </li>
+            )}
             {!token ? (
               <>
                 <li className="nav-item">
@@ -65,7 +68,7 @@ const NavBar = () => {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link ps-3" to="/login">
+                  <Link className="nav-link ps-3" to="/settings">
                     Settings
                   </Link>
                 </li>

@@ -28,3 +28,35 @@ export type userLogin = {
   username: string;
   password: string;
 };
+
+export type userUpdate = {
+  username: string;
+  email: string;
+  phoneNumber: number;
+};
+
+export type passwordReset = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type cart = {
+  product: {
+    _id: string;
+    name: string;
+    price: number;
+    images: string;
+  };
+  quantity: number;
+};
+
+export type cartItemProps = {
+  id: string;
+  name: string;
+  images: string;
+  price: number;
+  quantity: number;
+  total: number;
+  deleteFromCart(id: string): void;
+};
