@@ -3,10 +3,6 @@ import { User } from "../modules/userModule";
 import { Response } from "express";
 import { Product } from "../modules/productModule";
 import mongoose from "mongoose";
-interface CartItem {
-  productId: mongoose.Types.ObjectId;
-  quantity: number; // Optional, depending on your cart schema
-}
 
 export class ManageCart {
   static async addtoCart(req: AuthentificatedRequest, res: Response) {
@@ -32,7 +28,7 @@ export class ManageCart {
           quantity: req.body.quantity || 1,
         });
       }
-      
+
       await user.save();
       res.status(200).send(user.cart);
     } catch (error) {
@@ -47,20 +43,32 @@ export class ManageCart {
       if (!user) {
         return res.status(404).send("User not found");
       }
+
       const objectId = new mongoose.Types.ObjectId(req.params.id);
       const index = user.cart.findIndex((item) =>
         item.productId.equals(objectId)
       );
+
       if (index !== -1) {
+        const price = (await Product.findById(objectId)).price;
+        const quantity = user.cart[index].quantity;
+        const newTotal = user.totalCart - price * quantity;
+        user.totalCart = newTotal;
+
         user.cart.splice(index, 1);
+        await user.save();
+
+        return res.status(200).send(user.cart);
+      } else {
+        console.log("Item not found in cart.");
+        return res.status(404).send("Item not found in cart.");
       }
-      await user.save();
-      res.status(200).send(user.cart);
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
     }
   }
+
   static async getCart(req: AuthentificatedRequest, res: Response) {
     try {
       const user = await User.findById(req.user.id);
@@ -81,7 +89,7 @@ export class ManageCart {
       }, 0);
 
       user.totalCart = total;
-
+      await user.save();
       res.status(200).send({ cart: products, totalCart: user.totalCart });
     } catch (error) {
       console.error(error);
