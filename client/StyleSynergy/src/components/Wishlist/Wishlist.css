@@ -1,20 +1,16 @@
-.fa-cart-shopping {
+.fa-heart {
   color: hsla(0, 0%, 18%, 0.8);
   font-size: 20px;
-  margin-top: 12px;
+  margin-top: 10px;
   margin-right: 10px;
   cursor: pointer;
   transition: color 0.25ms ease;
 }
 
-.fa-cart-shopping:hover {
+.fa-heart:hover {
   color: hsla(0, 0%, 10%, 0.8);
 }
 
-.total {
-  margin-top: 20px;
-}
-
-.cartBadge {
-  margin-right: 20px;
+.wishBadge {
+  margin-right: 30px;
 }

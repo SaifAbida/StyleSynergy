@@ -37,15 +37,11 @@ const Cart = () => {
           });
         });
     }
-  }, [cart]);
-
-  function deleteFromCart(id: string) {
-    setCart((prevCart) => prevCart.filter((p) => p.product._id !== id));
-  }
+  }, []);
 
   return (
     <>
-      <Badge badgeContent={cart.length} color="error">
+      <Badge badgeContent={cart.length} color="error" className="cartBadge">
         <i className="fa-solid fa-cart-shopping" onClick={handleShow}></i>
       </Badge>
       <Offcanvas show={show} onHide={handleClose}>
@@ -55,15 +51,26 @@ const Cart = () => {
         <Offcanvas.Body>
           {cart.map((product) => (
             <CartItem
+              key={product.product._id}
               images={product.product.images}
               id={product.product._id}
               price={product.product.price}
               name={product.product.name}
               quantity={product.quantity}
               total={total}
-              deleteFromCart={deleteFromCart}
+              setCart={setCart}
+              setTotal={setTotal}
             />
           ))}
+          {total > 0 ? (
+            <div className="ms-auto fw-bold fs-5 total">
+              Total: ${total.toFixed(2)}
+            </div>
+          ) : (
+            <div className="ms-auto fw-bold fs-5 total">
+              Added products will display here
+            </div>
+          )}
         </Offcanvas.Body>
       </Offcanvas>
     </>

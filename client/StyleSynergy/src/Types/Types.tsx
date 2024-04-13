@@ -51,6 +51,7 @@ export type cart = {
   quantity: number;
 };
 
+
 export type cartItemProps = {
   id: string;
   name: string;
@@ -58,5 +59,13 @@ export type cartItemProps = {
   price: number;
   quantity: number;
   total: number;
-  deleteFromCart(id: string): void;
+  setCart: React.Dispatch<React.SetStateAction<cart[]>>;
+  setTotal: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export type WishItemProps = {
+  id: string;
+  name: string;
+  category: string;
+  images: string;
 };

@@ -2,6 +2,7 @@ import "./ProductCard.css";
 import { ProductCardProps } from "../../Types/Types";
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({
   name,
@@ -11,49 +12,69 @@ const ProductCard = ({
   id,
 }: ProductCardProps) => {
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   function handleClick() {
-    axios
-      .patch(
-        `http://127.0.0.1:8000/cart/add/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then((_: AxiosResponse) => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
+    if (token) {
+      axios
+        .patch(
+          `http://127.0.0.1:8000/cart/add/${id}`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((_: AxiosResponse) => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Product added successfully",
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Error has occurred",
+          });
         });
-        Toast.fire({
-          icon: "success",
-          title: "Product added successfully",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "error",
-          title: "Error has occurred",
-        });
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
       });
+      Toast.fire({
+        icon: "info",
+        title: "You need to login first",
+      });
+      navigate("/login");
+    }
   }
 
   return (
@@ -63,7 +84,7 @@ const ProductCard = ({
           <img src={images} className="card-img-top" alt="child-img" />
           <div className="card-body">
             <h5 className="card-title">{name}</h5>
-            <p className="card-text">Price: {price} $</p>
+            <p className="card-text">Price: ${price.toFixed(2)}</p>
             <p className="card-text">Category: {category}</p>
             <button type="button" className="btn btn-dark ">
               More Details

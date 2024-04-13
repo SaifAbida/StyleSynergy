@@ -1,6 +1,7 @@
 import { Stack } from "react-bootstrap";
 import { cartItemProps } from "../../Types/Types";
-import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 
@@ -10,7 +11,8 @@ const CartItem = ({
   quantity,
   name,
   id,
-  deleteFromCart,
+  setCart,
+  setTotal,
 }: cartItemProps) => {
   function handleClick() {
     const token = localStorage.getItem("token");
@@ -21,8 +23,9 @@ const CartItem = ({
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      .then((_: AxiosResponse) => {
-        deleteFromCart(id);
+      .then((res: AxiosResponse) => {
+        setCart(res.data.cart);
+        setTotal(res.data.totalCart);
       })
       .catch((error) => {
         console.error(error);
@@ -37,40 +40,47 @@ const CartItem = ({
   }
 
   return (
-    <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
-      <img
-        src={images}
-        alt="product img"
-        className="itemImage"
-        style={{
-          width: "100px",
-          height: "75px",
-          objectFit: "cover",
-          padding: "10px auto",
-          borderRadius: "13px",
-        }}
-      />
-      <div className="me-auto">
-        <div>
-          {name}
-          {quantity > 1 && (
-            <span style={{ fontSize: "0.8rem", color: "gray" }}>
-              {" "}
-              x{quantity}
-            </span>
-          )}
+    <>
+      <Stack
+        direction="horizontal"
+        gap={2}
+        className="d-flex align-items-center"
+      >
+        <img
+          src={images}
+          alt="product img"
+          className="itemImage"
+          style={{
+            width: "80px",
+            height: "50px",
+            objectFit: "cover",
+            borderRadius: "5px",
+            marginTop: "5px",
+          }}
+        />
+        <div className="me-auto">
+          <div>
+            {name}
+            {quantity > 1 && (
+              <span style={{ fontSize: "0.8rem", color: "gray" }}>
+                {" "}
+                x{quantity}
+              </span>
+            )}
+          </div>
+          <div
+            className="text-muted"
+            style={{ fontSize: "0.75rem", color: "gray" }}
+          >
+            ${price.toFixed(2)}
+          </div>
         </div>
-        <div
-          className="text-muted"
-          style={{ fontSize: "0.75rem", color: "gray" }}
-        >
-          ${price}
-        </div>
-      </div>
-      <Button variant="outlined" color="error" onClick={handleClick}>
-        x
-      </Button>
-    </Stack>
+        <IconButton aria-label="delete" onClick={handleClick}>
+          <DeleteIcon />
+        </IconButton>
+      </Stack>
+      <hr />
+    </>
   );
 };
 

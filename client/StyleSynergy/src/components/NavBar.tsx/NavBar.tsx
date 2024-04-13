@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Cart from "../Cart/Cart";
+import Wishlist from "../Wishlist/Wishlist";
 
 const NavBar = () => {
   const token = localStorage.getItem("token");
@@ -48,9 +49,15 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav ms-auto">
             {token && (
-              <li className="nav-item">
-                <Cart />
-              </li>
+              <>
+                {" "}
+                <li className="nav-item">
+                  <Wishlist />
+                </li>
+                <li className="nav-item">
+                  <Cart />
+                </li>
+              </>
             )}
             {!token ? (
               <>
