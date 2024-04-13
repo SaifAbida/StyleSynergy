@@ -1,5 +1,6 @@
 import { AuthentificatedRequest } from "../Authentificated Request/AuthentificatedRequest";
 import { User } from "../modules/userModule";
+import { Product } from "../modules/productModule";
 import { Response } from "express";
 import mongoose from "mongoose";
 
@@ -10,7 +11,12 @@ export class ManageWishList {
       if (!user) {
         return res.status(404).send("User not found");
       }
-      res.status(200).send(user.wishlist);
+
+      const wishList = await Promise.all(
+        user.wishlist.map(async (e) => await Product.findById(e))
+      );
+
+      res.status(200).send(wishList);
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
@@ -28,7 +34,10 @@ export class ManageWishList {
       }
       user.wishlist = [...new Set(user.wishlist)];
       await user.save();
-      res.status(200).send(user.wishlist);
+      const wishList = await Promise.all(
+        user.wishlist.map(async (e) => await Product.findById(e))
+      );
+      res.status(200).send(wishList);
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
@@ -43,7 +52,12 @@ export class ManageWishList {
       const objectId = new mongoose.Types.ObjectId(req.params.id);
       user.wishlist = user.wishlist.filter((id) => !id.equals(objectId));
       await user.save();
-      res.status(200).send(user.wishlist);
+
+      const wishList = await Promise.all(
+        user.wishlist.map(async (e) => await Product.findById(e))
+      );
+
+      res.status(200).send(wishList);
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
