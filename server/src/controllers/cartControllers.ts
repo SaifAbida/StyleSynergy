@@ -29,8 +29,21 @@ export class ManageCart {
         });
       }
 
+      const products = await Promise.all(
+        user.cart.map(async (p) => {
+          const product = await Product.findById(p.productId);
+          return { product, quantity: p.quantity };
+        })
+      );
+
+      const total = products.reduce((acc, p) => {
+        return acc + p.product.price * p.quantity;
+      }, 0);
+
+      user.totalCart = total;
+
       await user.save();
-      res.status(200).send(user.cart);
+      res.status(200).send({ cart: products, totalCart: user.totalCart });
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
@@ -39,7 +52,7 @@ export class ManageCart {
 
   static async deleteFromCart(req: AuthentificatedRequest, res: Response) {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(req.user.id).populate("cart");
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -58,7 +71,15 @@ export class ManageCart {
         user.cart.splice(index, 1);
         await user.save();
 
-        return res.status(200).send(user.cart);
+        const products = await Promise.all(
+          user.cart.map(async (p) => {
+            const product = await Product.findById(p.productId);
+            return { product, quantity: p.quantity };
+          })
+        );
+        return res
+          .status(200)
+          .send({ cart: products, totalCart: user.totalCart });
       } else {
         console.log("Item not found in cart.");
         return res.status(404).send("Item not found in cart.");
