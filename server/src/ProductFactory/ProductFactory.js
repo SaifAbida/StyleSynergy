@@ -20,7 +20,7 @@ var MoviesFactory = /** @class */ (function () {
             name: faker_1.faker.commerce.productName(),
             price: Number(faker_1.faker.commerce.price({ min: 100, max: 1000, dec: 0 })),
             stock: Number(faker_1.faker.commerce.price({ min: 1, max: 300, dec: 0 })),
-            size: faker_1.faker.helpers.arrayElements(["S", "M", "L", "XL"], 1)[0],
+            size: faker_1.faker.helpers.arrayElements(["S", "M", "L", "XL"], 4),
             images: faker_1.faker.image.url(),
             category: faker_1.faker.helpers.arrayElements(["men", "female", "children"], 1)[0],
             description: faker_1.faker.lorem.paragraph(),
