@@ -26,13 +26,14 @@ export class ManageCart {
         user.cart.push({
           productId: objectId,
           quantity: req.body.quantity || 1,
+          size: req.body.size,
         });
       }
 
       const products = await Promise.all(
         user.cart.map(async (p) => {
           const product = await Product.findById(p.productId);
-          return { product, quantity: p.quantity };
+          return { product, quantity: p.quantity, size: p.size };
         })
       );
 
@@ -74,7 +75,7 @@ export class ManageCart {
         const products = await Promise.all(
           user.cart.map(async (p) => {
             const product = await Product.findById(p.productId);
-            return { product, quantity: p.quantity };
+            return { product, quantity: p.quantity, size: p.size };
           })
         );
         return res
@@ -101,7 +102,7 @@ export class ManageCart {
       const products = await Promise.all(
         user.cart.map(async (p) => {
           const product = await Product.findById(p.productId);
-          return { product, quantity: p.quantity };
+          return { product, quantity: p.quantity, size: p.size };
         })
       );
 

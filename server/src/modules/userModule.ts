@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema(
             ref: "Product",
           },
           quantity: { type: Number },
+          size: String,
         },
       ],
       default: [],
