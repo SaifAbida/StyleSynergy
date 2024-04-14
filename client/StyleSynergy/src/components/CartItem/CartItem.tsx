@@ -11,6 +11,7 @@ const CartItem = ({
   quantity,
   name,
   id,
+  size,
   setCart,
   setTotal,
 }: cartItemProps) => {
@@ -61,6 +62,12 @@ const CartItem = ({
         <div className="me-auto">
           <div>
             {name}
+            {size && (
+              <span style={{ fontSize: "0.8rem", color: "gray" }}>
+                {" "}
+                {`(${size})`}
+              </span>
+            )}
             {quantity > 1 && (
               <span style={{ fontSize: "0.8rem", color: "gray" }}>
                 {" "}

@@ -1,9 +1,9 @@
-export type Product = {
+export type ProductType = {
   _id: string;
   name: string;
   price: number;
   stock: number;
-  size: "S" | "M" | "L" | "XL";
+  size: ["S", "M", "L", "XL"];
   images: string;
   category: "men" | "female" | "children";
   description: string;
@@ -49,8 +49,8 @@ export type cart = {
     images: string;
   };
   quantity: number;
+  size: string;
 };
-
 
 export type cartItemProps = {
   id: string;
@@ -58,7 +58,7 @@ export type cartItemProps = {
   images: string;
   price: number;
   quantity: number;
-  total: number;
+  size: string;
   setCart: React.Dispatch<React.SetStateAction<cart[]>>;
   setTotal: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -68,4 +68,19 @@ export type WishItemProps = {
   name: string;
   category: string;
   images: string;
+};
+
+export type GlobalContextType = {
+  cart: cart[];
+  setCart: React.Dispatch<React.SetStateAction<cart[]>>;
+  setTotal: React.Dispatch<React.SetStateAction<number>>;
+  wishlist: ProductType[];
+  setWishlist: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  total: number;
+};
+
+
+export type ProductInput = {
+  size: string;
+  quantity: number;
 };
