@@ -8,17 +8,21 @@ import mongoose from "mongoose";
 export class ManageOrders {
   static async createOrder(req: AuthentificatedRequest, res: Response) {
     try {
-      const { shipping } = req.body;
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
       const newOrder = new Order({
+        ...req.body,
         userID: user._id,
         products: user.cart,
         total: user.totalCart,
-        shipping,
-        status: "pending",
+      });
+
+      user.cart.map(async (p) => {
+        const product = await Product.findById(p.productId);
+        product.stock -= p.quantity;
+        await product.save();
       });
 
       user.cart.splice(0, user.cart.length);
@@ -79,7 +83,9 @@ export class ManageOrders {
         return res.status(400).send("Bad Request");
       }
       await order.deleteOne();
-      res.status(200).send("Order deleted successfully");
+      const orders = await Order.find({ userID: req.user.id });
+
+      res.status(200).send(orders);
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");
