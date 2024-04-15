@@ -8,3 +8,16 @@ nav {
   color: hsla(0, 0%, 18%, 0.8);
 }
 
+.fa-bag-shopping {
+  color: hsla(0, 0%, 18%, 0.8);
+  font-size: 22px;
+  margin-top: 8px;
+  margin-right: 20px;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: color 0.25ms ease;
+}
+
+.fa-bag-shopping:hover {
+  color: hsla(0, 0%, 10%, 0.8);
+}

@@ -49,5 +49,12 @@
 }
 
 .description {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
+}
+
+.outOfStock {
+  margin-top: 10px;
+  color: hsl(0, 50%, 49%);
+  font-weight: bold;
+  font-size: 20px;
 }

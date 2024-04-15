@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type ProductType = {
   _id: string;
   name: string;
@@ -79,8 +81,44 @@ export type GlobalContextType = {
   total: number;
 };
 
-
 export type ProductInput = {
   size: string;
   quantity: number;
+};
+
+export type OrderInput = {
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  country: string;
+  postCode: number;
+};
+
+export type OrderType = {
+  _id: string;
+  userID: string;
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  country: string;
+  postCode: number;
+  total: number;
+  createdAt: ReactNode;
+  status: "delivered" | "pending";
+};
+
+export type OrderProps = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  country: string;
+  postCode: number;
+  total: number;
+  createdAt: ReactNode;
+  status: "delivered" | "pending";
+  setOrders: React.Dispatch<React.SetStateAction<OrderType[]>>;
 };

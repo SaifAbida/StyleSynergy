@@ -1,0 +1,15 @@
+.orderContainer {
+  width: 80vw;
+  margin: auto;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order h1 {
+  padding: 20px;
+  font-weight: bold;
+  font-size: 50px;
+  color: hsla(0, 0%, 18%, 0.8);
+}

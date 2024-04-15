@@ -1,9 +1,10 @@
-import { Badge } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import { useState, useContext } from "react";
 import "./Cart.css";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import CartItem from "../CartItem/CartItem";
 import { globalContext } from "../../App";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const { cart, setCart, total, setTotal } = useContext(globalContext) || {
@@ -16,6 +17,12 @@ const Cart = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const OrderBtnStyle = {
+    marginTop: "30px",
+    marginLeft: "125px",
+    backgroundColor: "hsla(0, 0%, 18%, 0.8)",
+  };
 
   return (
     <>
@@ -48,6 +55,16 @@ const Cart = () => {
             <div className="ms-auto fw-bold fs-5 total">
               Added products will display here
             </div>
+          )}
+          {cart.length > 0 && (
+            <Button variant="contained" style={OrderBtnStyle}>
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/order/new"
+              >
+                Checkout
+              </Link>
+            </Button>
           )}
         </Offcanvas.Body>
       </Offcanvas>

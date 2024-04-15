@@ -57,6 +57,11 @@ const NavBar = () => {
                 <li className="nav-item">
                   <Cart />
                 </li>
+                <li>
+                  <Link to="/order">
+                    <i className="fa-solid fa-bag-shopping"></i>
+                  </Link>
+                </li>
               </>
             )}
             {!token ? (

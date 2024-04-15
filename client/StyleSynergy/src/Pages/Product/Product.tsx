@@ -1,18 +1,28 @@
 import InputLabel from "@mui/material/InputLabel/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select/Select";
 import MenuItem from "@mui/material/MenuItem/MenuItem";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ProductInput } from "../../Types/Types";
 import { TextField } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ProductType } from "../../Types/Types";
+import { globalContext } from "../../App";
+import Swal from "sweetalert2";
 import "./Product.css";
+import { Maximize } from "@mui/icons-material";
 
 const Product = () => {
   const { id } = useParams();
   const [input, setInput] = useState<ProductInput>({} as ProductInput);
   const [product, setProduct] = useState<ProductType | null>(null);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const { setCart, setTotal, setWishlist } = useContext(globalContext) || {
+    setCart: () => {},
+    setTotal: () => {},
+    setWishlist: () => {},
+  };
 
   useEffect(() => {
     axios
@@ -24,10 +34,6 @@ const Product = () => {
         console.error(error);
       });
   }, []);
-
-  useEffect(() => {
-    console.log(input);
-  }, [product]);
 
   function handleChangeText(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -43,6 +49,133 @@ const Product = () => {
       ...prevInput,
       [name]: value,
     }));
+  }
+
+  function handleCart() {
+    if (token) {
+      axios
+        .patch(`http://127.0.0.1:8000/cart/add/${id}`, input, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res: AxiosResponse) => {
+          setCart(res.data.cart);
+          setTotal(res.data.totalCart);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Product added successfully",
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Error has occurred",
+          });
+        });
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "info",
+        title: "You need to login first",
+      });
+      navigate("/login");
+    }
+  }
+
+  function handleWishlist() {
+    if (token) {
+      axios
+        .patch(
+          `http://127.0.0.1:8000/wishlist/add/${id}`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((res: AxiosResponse) => {
+          setWishlist(res.data);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Product added successfully",
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Error has occurred",
+          });
+        });
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "info",
+        title: "You need to login first",
+      });
+      navigate("/login");
+    }
   }
 
   if (!product) {
@@ -65,37 +198,57 @@ const Product = () => {
           <p>
             <span className="title">Category:</span> {product.category}
           </p>
-          <InputLabel id="demo-simple-select-label">Size</InputLabel>
+          <InputLabel id="demo-simple-select-label" style={{ width: "70px" }}>
+            Size
+          </InputLabel>
           <Select
-            name="size"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label="Size"
-            value={input.size}
-            required
+            label="Age"
             onChange={handleChangeSelect}
-            style={{ width: "100px" }}
+            style={{ width: "80px" }}
+            name="size"
           >
             {product.size.map((s) => (
-              <MenuItem value={input.size}>{s}</MenuItem>
+              <MenuItem value={s} key={s}>
+                {s}
+              </MenuItem>
             ))}
           </Select>
+          <InputLabel
+            id="demo-simple-select"
+            style={{ width: "70px", marginTop: "10px" }}
+          >
+            Quantity
+          </InputLabel>
           <TextField
             name="quantity"
-            id="outlined-password-input"
-            label="Quantity"
+            id="demo-simple-select"
             type="number"
             required
-            value={input.quantity}
             onChange={handleChangeText}
-            style={{ width: "100px", marginLeft: "20px" }}
+            style={{ width: "80px" }}
+            inputProps={{
+              min: 1,
+              defaultValue: 1,
+              max: product.stock,
+            }}
           />
           {product.stock > 0 ? (
             <div className="btns">
-              <button type="button" className="btn btn-dark">
+              <button
+                type="button"
+                className="btn btn-dark"
+                onClick={handleCart}
+              >
                 Add to cart
               </button>
-              <button type="button" className="btn btn-outline-danger ms-3">
+              <button
+                type="button"
+                className="btn btn-outline-danger ms-3"
+                onClick={handleWishlist}
+              >
+                Wishlist {"   "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -109,7 +262,7 @@ const Product = () => {
               </button>
             </div>
           ) : (
-            <p>Product out of stock</p>
+            <div className="outOfStock">Product out of stock</div>
           )}
           <p className="description">
             <span className="title"> Product details: </span>

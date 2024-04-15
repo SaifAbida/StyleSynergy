@@ -1,0 +1,11 @@
+.order-details {
+  padding: 30px;
+  border: 2px solid hsla(0, 0%, 18%, 0.2);
+  border-radius: 15px;
+  margin: auto 0 auto 60px;
+}
+
+.order-details p {
+  font-weight: 400;
+  color: hsla(0, 0%, 18%, 0.8);
+}

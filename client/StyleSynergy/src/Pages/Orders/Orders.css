@@ -1,0 +1,25 @@
+.ordersContainer {
+  width: 100vw;
+  height: 64vh;
+}
+
+.ordersContainer h1 {
+  font-weight: bold;
+  font-size: 50px;
+  color: hsla(0, 0%, 18%, 0.8);
+  margin: 40px 100px;
+}
+
+.orderDisplay {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.noContent {
+  font-weight: bold;
+  font-size: 70px;
+  color: hsla(0, 0%, 18%, 0.8);
+  text-align: center;
+  margin-top: 70px;
+}

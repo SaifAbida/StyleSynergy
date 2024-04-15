@@ -14,6 +14,8 @@ import { GlobalContextType, ProductType } from "./Types/Types";
 import { cart } from "./Types/Types";
 import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
+import CreateOrder from "./Pages/CreateOrder/CreateOrder";
+import Orders from "./Pages/Orders/Orders";
 
 export const globalContext = createContext<GlobalContextType | undefined>(
   undefined
@@ -84,6 +86,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/order" element={<Orders />} />
+          <Route path="/order/new" element={<CreateOrder />} />
           <Route path="/product/:id" element={<Product />} />
         </Routes>
       </globalContext.Provider>
