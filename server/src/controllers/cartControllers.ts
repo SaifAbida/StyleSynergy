@@ -19,13 +19,19 @@ export class ManageCart {
       );
 
       if (itemIndex !== -1) {
-        // If item already exists in cart, update its quantity
-        user.cart[itemIndex].quantity += req.body.quantity || 1;
+        if (user.cart[itemIndex].size !== req.body.size) {
+          user.cart.push({
+            productId: objectId,
+            quantity: Number(req.body.quantity) || 1,
+            size: req.body.size,
+          });
+        } else {
+          user.cart[itemIndex].quantity += Number(req.body.quantity) || 1;
+        }
       } else {
-        // If item doesn't exist in cart, add it
         user.cart.push({
           productId: objectId,
-          quantity: req.body.quantity || 1,
+          quantity: Number(req.body.quantity) || 1,
           size: req.body.size,
         });
       }
