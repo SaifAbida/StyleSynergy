@@ -40,7 +40,6 @@ const Login = () => {
     axios
       .post("http://127.0.0.1:8000/user/login", user)
       .then((res: AxiosResponse) => {
-        console.log(res.data.message);
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -60,7 +59,6 @@ const Login = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",

@@ -1,0 +1,39 @@
+.orderDetails h1 {
+  font-weight: bold;
+  font-size: 50px;
+  color: hsla(0, 0%, 18%, 0.8);
+  margin: 10px 100px 30px 100px;
+}
+
+.orderDetails p {
+  font-weight: 400;
+  color: hsla(0, 0%, 18%, 0.8);
+  margin-left: 100px;
+}
+
+.orderDetails {
+  padding: 30px;
+  border: 2px solid hsla(0, 0%, 18%, 0.2);
+  border-radius: 15px;
+  margin: 40px 200px;
+}
+
+.productDetailsDisplay {
+  display: flex;
+  justify-content: space-around;
+}
+
+.totalOrder {
+  font-weight: bold;
+  font-size: 30px;
+  color: hsla(0, 0%, 18%, 0.8);
+  text-align: right;
+  width: 300px;
+  margin-left: 100px;
+}
+
+.orderEnd {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}

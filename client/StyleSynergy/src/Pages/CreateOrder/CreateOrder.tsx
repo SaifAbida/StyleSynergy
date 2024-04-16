@@ -98,11 +98,10 @@ const CreateOrder = () => {
         navigate("/order");
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Unexpected error occurred",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });

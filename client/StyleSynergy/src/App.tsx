@@ -16,6 +16,10 @@ import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 import CreateOrder from "./Pages/CreateOrder/CreateOrder";
 import Orders from "./Pages/Orders/Orders";
+import Order from "./Pages/Order/Order";
+import PrivateRoutes from "./Utils/PrivateRoutes";
+import AuthRoutes from "./Utils/AuthRoutes";
+import NotFound from "./Pages/NotFound/NotFound";
 
 export const globalContext = createContext<GlobalContextType | undefined>(
   undefined
@@ -42,7 +46,7 @@ function App() {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
             showConfirmButton: false,
             timer: 1500,
           });
@@ -64,7 +68,7 @@ function App() {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
             showConfirmButton: false,
             timer: 1500,
           });
@@ -83,12 +87,18 @@ function App() {
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/children" element={<Children />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/order" element={<Orders />} />
-          <Route path="/order/new" element={<CreateOrder />} />
+          <Route element={<AuthRoutes />}>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/order" element={<Orders />} />
+            <Route path="/order/new" element={<CreateOrder />} />
+            <Route path="/order/:id" element={<Order />} />
+          </Route>
           <Route path="/product/:id" element={<Product />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </globalContext.Provider>
       <Footer />

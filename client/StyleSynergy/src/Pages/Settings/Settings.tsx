@@ -43,11 +43,10 @@ const Settings = () => {
         }
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Error occurred while deleting your account",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });

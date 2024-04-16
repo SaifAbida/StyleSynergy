@@ -49,7 +49,6 @@ const ProductCard = ({
           });
         })
         .catch((error) => {
-          console.error(error);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -63,7 +62,7 @@ const ProductCard = ({
           });
           Toast.fire({
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
           });
         });
     } else {
@@ -114,7 +113,6 @@ const ProductCard = ({
           });
         })
         .catch((error) => {
-          console.error(error);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -128,7 +126,7 @@ const ProductCard = ({
           });
           Toast.fire({
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
           });
         });
     } else {

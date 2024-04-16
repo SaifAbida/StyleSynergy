@@ -25,11 +25,10 @@ const WishItem = ({ images, name, category, id }: WishItemProps) => {
         setWishlist(res.data);
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Error has occurred",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });

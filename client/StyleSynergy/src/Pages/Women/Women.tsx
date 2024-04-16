@@ -1,10 +1,12 @@
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
-import { Product } from "../../Types/Types";
+import { ProductType } from "../../Types/Types";
 import axios, { AxiosResponse } from "axios";
 import "./Women.css";
 import { Skeleton } from "@mui/material";
 import { Pagination } from "@mui/material";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const paginationStyle = {
   marginLeft: "890px",
@@ -12,9 +14,10 @@ const paginationStyle = {
 };
 
 const Women = () => {
-  const [products, setProducts] = useState<Product[]>([] as Product[]);
+  const [products, setProducts] = useState<ProductType[]>([] as ProductType[]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -24,7 +27,12 @@ const Women = () => {
         setTotalPages(res.data.totalPages);
       })
       .catch((error) => {
-        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data,
+        });
+        navigate("/");
       });
   }, [page]);
 

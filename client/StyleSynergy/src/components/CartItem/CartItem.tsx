@@ -29,11 +29,10 @@ const CartItem = ({
         setTotal(res.data.totalCart);
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Error has occurred",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });

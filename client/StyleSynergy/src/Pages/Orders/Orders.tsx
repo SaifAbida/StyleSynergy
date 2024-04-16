@@ -3,6 +3,7 @@ import Order from "../../components/Order/Order";
 import axios, { AxiosResponse } from "axios";
 import { OrderType } from "../../Types/Types";
 import "./Orders.css";
+import Swal from "sweetalert2";
 
 const Orders = () => {
   const token = localStorage.getItem("token");
@@ -15,6 +16,15 @@ const Orders = () => {
       })
       .then((res: AxiosResponse) => {
         setOrders(res.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.response.data,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   }, []);
 

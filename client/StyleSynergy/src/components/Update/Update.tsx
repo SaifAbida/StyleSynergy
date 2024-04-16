@@ -42,11 +42,10 @@ const Update = () => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Error occurred while getting your data",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log(error);
       });
   }, []);
 
@@ -74,11 +73,10 @@ const Update = () => {
         });
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Error occurred while updating your data",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });

@@ -50,11 +50,11 @@ const Register = () => {
         navigate("/login");
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Unexpected error occurred",
+          title: error.response.data,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -78,7 +78,7 @@ const Register = () => {
           name="email"
           id="outlined-password-input"
           label="Email"
-          type="email"
+          type="text"
           onChange={handleChange}
           required
         />

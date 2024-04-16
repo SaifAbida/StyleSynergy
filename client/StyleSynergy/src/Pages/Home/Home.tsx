@@ -2,13 +2,14 @@ import Slide from "../../components/Slide/Slide";
 import "./Home.css";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
-import { Product } from "../../Types/Types";
+import { ProductType } from "../../Types/Types";
 import axios, { AxiosResponse } from "axios";
 import { Skeleton } from "@mui/material";
+import Swal from "sweetalert2";
 
 const Home = () => {
-  const [bestSellers, setBestSellers] = useState<Product[]>([]);
-  const [onSale, setOnsale] = useState<Product[]>([]);
+  const [bestSellers, setBestSellers] = useState<ProductType[]>([]);
+  const [onSale, setOnsale] = useState<ProductType[]>([]);
 
   useEffect(() => {
     axios
@@ -17,7 +18,11 @@ const Home = () => {
         setBestSellers(res.data.products);
       })
       .catch((error) => {
-        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data,
+        });
       });
   }, []);
 
@@ -28,7 +33,11 @@ const Home = () => {
         setOnsale(res.data.products);
       })
       .catch((error) => {
-        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data,
+        });
       });
   }, []);
 

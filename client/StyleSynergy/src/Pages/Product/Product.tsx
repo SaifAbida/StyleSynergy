@@ -10,7 +10,6 @@ import { ProductType } from "../../Types/Types";
 import { globalContext } from "../../App";
 import Swal from "sweetalert2";
 import "./Product.css";
-import { Maximize } from "@mui/icons-material";
 
 const Product = () => {
   const { id } = useParams();
@@ -30,8 +29,15 @@ const Product = () => {
       .then((res: AxiosResponse) => {
         setProduct(res.data);
       })
-      .then((error) => {
-        console.error(error);
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.response.data,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
       });
   }, []);
 
@@ -77,7 +83,6 @@ const Product = () => {
           });
         })
         .catch((error) => {
-          console.error(error);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -91,7 +96,7 @@ const Product = () => {
           });
           Toast.fire({
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
           });
         });
     } else {
@@ -141,7 +146,6 @@ const Product = () => {
           });
         })
         .catch((error) => {
-          console.error(error);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -155,7 +159,7 @@ const Product = () => {
           });
           Toast.fire({
             icon: "error",
-            title: "Error has occurred",
+            title: error.response.data,
           });
         });
     } else {
