@@ -2,6 +2,7 @@ import { ManageCart } from "../controllers/cartControllers";
 import express from "express";
 import { VerifyLogin } from "../middlewares/VerfiyLogin";
 
+
 const router = express.Router();
 
 router.get("/", VerifyLogin.verifyLogin, ManageCart.getCart);

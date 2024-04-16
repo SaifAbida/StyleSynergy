@@ -10,7 +10,7 @@ export class ManageOrders {
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).send("User not found");
       }
       const newOrder = new Order({
         ...req.body,
@@ -30,10 +30,10 @@ export class ManageOrders {
       const savedOrder = await newOrder.save();
       user.orders.push(savedOrder._id);
       await user.save();
-      res.status(200).json(savedOrder);
+      res.status(200).send(savedOrder);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Failed to create order" });
+      res.status(500).send("Unexpected error occurred");
     }
   }
   static async deliverOrder(req: AuthentificatedRequest, res: Response) {
@@ -49,6 +49,10 @@ export class ManageOrders {
   }
   static async getOrders(req: AuthentificatedRequest, res: Response) {
     try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        res.status(404).send("User not found");
+      }
       const orders = await Order.find({ userID: req.user.id });
       res.status(200).send(orders);
     } catch (error) {
@@ -58,7 +62,7 @@ export class ManageOrders {
   }
   static async getOrder(req: AuthentificatedRequest, res: Response) {
     try {
-      const order = await Order.findById(req.params.id).populate("products");
+      const order = await Order.findById(req.params.id);
       if (!order) {
         return res.status(404).send("Order not found");
       }
@@ -66,7 +70,15 @@ export class ManageOrders {
       if (order.userID.toString() !== objectId.toString()) {
         return res.status(400).send("Unauthorized access");
       }
-      res.status(200).send(order);
+
+      const products = await Promise.all(
+        order.products.map(async (p) => {
+          const product = await Product.findById(p.productId);
+          return { product, quantity: p.quantity, size: p.size };
+        })
+      );
+
+      res.status(200).send({ order, productDetails: products });
     } catch (error) {
       console.error(error);
       res.status(500).send("Unexpected error occurred");

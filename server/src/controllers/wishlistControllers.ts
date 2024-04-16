@@ -29,6 +29,11 @@ export class ManageWishList {
         return res.status(404).send("User not found");
       }
       const objectId = new mongoose.Types.ObjectId(req.params.id);
+
+      if (!objectId) {
+        return res.status(404).send("Product not found");
+      }
+
       if (!user.wishlist.includes(objectId)) {
         user.wishlist.push(objectId);
       }
@@ -50,6 +55,10 @@ export class ManageWishList {
         return res.status(404).send("User not found");
       }
       const objectId = new mongoose.Types.ObjectId(req.params.id);
+
+      if (!objectId) {
+        return res.status(404).send("Product not found");
+      }
       user.wishlist = user.wishlist.filter((id) => !id.equals(objectId));
       await user.save();
 

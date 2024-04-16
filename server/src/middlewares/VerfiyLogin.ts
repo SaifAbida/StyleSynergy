@@ -11,14 +11,14 @@ export class VerifyLogin {
     try {
       const authHeaders = req.headers.authorization;
       if (!authHeaders) {
-        return res.status(401).send("Your are not authorized");
+        return res.status(401).send("You are not authorized");
       }
       const token = authHeaders.split(" ")[1];
       const decoded = jwt.verify(
         token,
         process.env.TOKEN_ACCESS_KEY
       ) as jwt.JwtPayload;
-      // Initialize req.user if not already initialized
+
       if (!req.user) {
         req.user = {
           id: "",

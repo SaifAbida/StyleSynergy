@@ -13,6 +13,10 @@ export class ManageCart {
       }
       const objectId = new mongoose.Types.ObjectId(req.params.id);
 
+      if (!objectId) {
+        return res.status(404).send("Product not found");
+      }
+
       // Find the item in the cart by productId
       const itemIndex = user.cart.findIndex((item) =>
         item.productId.equals(objectId)
@@ -59,7 +63,7 @@ export class ManageCart {
 
   static async deleteFromCart(req: AuthentificatedRequest, res: Response) {
     try {
-      const user = await User.findById(req.user.id).populate("cart");
+      const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -88,7 +92,6 @@ export class ManageCart {
           .status(200)
           .send({ cart: products, totalCart: user.totalCart });
       } else {
-        console.log("Item not found in cart.");
         return res.status(404).send("Item not found in cart.");
       }
     } catch (error) {
@@ -103,7 +106,6 @@ export class ManageCart {
       if (!user) {
         return res.status(404).send("User not found");
       }
-      //Calcuate TotalCart :
 
       const products = await Promise.all(
         user.cart.map(async (p) => {
