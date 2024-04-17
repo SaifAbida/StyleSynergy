@@ -12,6 +12,11 @@ export class ManageOrders {
       if (!user) {
         return res.status(404).send("User not found");
       }
+
+      if (user.cart.length === 0) {
+        return res.status(400).send("Your cart is empty");
+      }
+
       const newOrder = new Order({
         ...req.body,
         userID: user._id,
@@ -90,13 +95,19 @@ export class ManageOrders {
       if (!order) {
         return res.status(404).send("Order not found");
       }
-      const objectId = new mongoose.Types.ObjectId(req.user.id);
-      if (order.userID.toString() !== objectId.toString()) {
+      const userObjectId = new mongoose.Types.ObjectId(req.user.id);
+      const orderObjectId = new mongoose.Types.ObjectId(req.params.id);
+
+      if (order.userID.toString() !== userObjectId.toString()) {
         return res.status(400).send("Bad Request");
       }
       await order.deleteOne();
       const orders = await Order.find({ userID: req.user.id });
-
+      const user = await User.findById(req.user.id);
+      user.orders = user.orders.filter(
+        (orderId) => orderId.toString() !== orderObjectId.toString()
+      );
+      await user.save();
       res.status(200).send(orders);
     } catch (error) {
       console.error(error);
