@@ -4,6 +4,7 @@ import { Order } from "../modules/orderModule";
 import { User } from "../modules/userModule";
 import { Product } from "../modules/productModule";
 import mongoose from "mongoose";
+import { ToadScheduler, SimpleIntervalJob, Task } from "toad-scheduler";
 
 export class ManageOrders {
   static async createOrder(req: AuthentificatedRequest, res: Response) {
@@ -35,6 +36,18 @@ export class ManageOrders {
       const savedOrder = await newOrder.save();
       user.orders.push(savedOrder._id);
       await user.save();
+
+      // Adding a scheduler to change to status of an order for dev purposes
+      /////////////////////////////////////////////////////////////////////
+      const scheduler = new ToadScheduler();
+      const task = new Task("delivering", async () => {
+        savedOrder.status = "delivered";
+        await savedOrder.save();
+      });
+      const job = new SimpleIntervalJob({ seconds: 30 }, task);
+      scheduler.addSimpleIntervalJob(job);
+      ///////////////////////////////////////////////////////////////////
+
       res.status(200).send(savedOrder);
     } catch (error) {
       console.error(error);
