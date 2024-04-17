@@ -38,32 +38,34 @@ const Order = ({
       confirmButtonColor: "#cc0000",
       cancelButtonColor: "#2e2e2e",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`http://127.0.0.1:8000/order/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((res: AxiosResponse) => {
-            setOrders(res.data);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Order deleted successfully",
-              showConfirmButton: false,
-              timer: 1500,
-            }).catch((error) => {
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://127.0.0.1:8000/order/${id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((res: AxiosResponse) => {
+              setOrders(res.data);
               Swal.fire({
                 position: "center",
-                icon: "error",
-                title: error.response.data,
+                icon: "success",
+                title: "Order deleted successfully",
                 showConfirmButton: false,
                 timer: 1500,
               });
             });
-          });
-      }
-    });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.response.data,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
   }
 
   return (

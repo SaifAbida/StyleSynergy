@@ -50,7 +50,6 @@ const Register = () => {
         navigate("/login");
       })
       .catch((error) => {
-        console.log(error);
         Swal.fire({
           position: "center",
           icon: "error",
@@ -68,15 +67,16 @@ const Register = () => {
         <TextField
           style={InputStyle}
           name="username"
-          id="outlined-password-input"
+          id="outlined-username-input"
           label="Username"
           type="text"
           onChange={handleChange}
+          autoComplete="username"
           required
         />
         <TextField
           name="email"
-          id="outlined-password-input"
+          id="outlined-email-input"
           label="Email"
           type="text"
           onChange={handleChange}
@@ -84,10 +84,11 @@ const Register = () => {
         />
         <TextField
           name="phoneNumber"
-          id="outlined-password-input"
+          id="outlined-number-input"
           label="Phone Number"
           type="number"
           onChange={handleChange}
+          autoComplete="tel"
           required
         />
         <TextField
@@ -96,6 +97,7 @@ const Register = () => {
           label="Password"
           type="password"
           onChange={handleChange}
+          autoComplete="current-password"
           required
         />
         <Button variant="outlined" type="submit" style={BtnStyle}>

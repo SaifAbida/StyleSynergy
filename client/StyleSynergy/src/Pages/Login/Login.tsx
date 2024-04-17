@@ -76,11 +76,12 @@ const Login = () => {
         <TextField
           style={InputStyle}
           name="username"
-          id="outlined-password-input"
+          id="outlined-username-input"
           label="Username"
           type="text"
           onChange={handleChange}
           required
+          autoComplete="username"
         />
         <TextField
           style={InputStyle}
@@ -89,6 +90,7 @@ const Login = () => {
           label="Password"
           type="password"
           onChange={handleChange}
+          autoComplete="current-password"
           required
         />
         <Button variant="outlined" type="submit" style={BtnStyle}>

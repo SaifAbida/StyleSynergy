@@ -24,6 +24,7 @@ const Wishlist = () => {
           {wishlist.length > 0 ? (
             wishlist.map((p) => (
               <WishItem
+                key={p._id}
                 images={p.images}
                 name={p.name}
                 category={p.category}

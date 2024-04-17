@@ -22,7 +22,11 @@ const InputStyle = {
 };
 
 const PasswordReset = () => {
-  const [password, setPassword] = useState<passwordReset>({} as passwordReset);
+  const [password, setPassword] = useState<passwordReset>({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const token = localStorage.getItem("token");
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -74,30 +78,33 @@ const PasswordReset = () => {
           style={InputStyle}
           name="currentPassword"
           label="Current password"
-          id="outlined-password-input"
+          id="outlined-current-input"
           type="password"
           onChange={handleChange}
           value={password.currentPassword}
+          autoComplete="current-password"
           required
         />
         <TextField
           style={InputStyle}
           name="newPassword"
           label="New password"
-          id="outlined-password-input"
+          id="outlined-new-input"
           type="password"
           onChange={handleChange}
           value={password.newPassword}
+          autoComplete="new-password"
           required
         />
         <TextField
           style={InputStyle}
           name="confirmPassword"
           label="Confirm your new password"
-          id="outlined-password-input"
+          id="outlined-confirm-input"
           type="password"
           onChange={handleChange}
           value={password.confirmPassword}
+          autoComplete="new-password"
           required
         />
         <Button variant="outlined" type="submit" style={BtnStyle}>

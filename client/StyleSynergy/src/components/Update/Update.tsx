@@ -22,7 +22,11 @@ const InputStyle = {
 };
 
 const Update = () => {
-  const [user, setUser] = useState<userUpdate>({} as userUpdate);
+  const [user, setUser] = useState<userUpdate>({
+    username: "",
+    email: "",
+    phoneNumber: 0,
+  });
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -90,16 +94,17 @@ const Update = () => {
         <TextField
           style={InputStyle}
           name="username"
-          id="outlined-password-input"
+          id="outlined-username-input"
           type="text"
           required
           onChange={handleChange}
+          autoComplete="username"
           value={user.username}
         />
         <TextField
           style={InputStyle}
           name="email"
-          id="outlined-password-input"
+          id="outlined-email-input"
           type="email"
           required
           onChange={handleChange}
@@ -108,10 +113,11 @@ const Update = () => {
         <TextField
           style={InputStyle}
           name="phoneNumber"
-          id="outlined-password-input"
+          id="outlined-number-input"
           type="number"
           required
           onChange={handleChange}
+          autoComplete="tel"
           value={user.phoneNumber}
         />
         <Button variant="outlined" type="submit" style={BtnStyle}>

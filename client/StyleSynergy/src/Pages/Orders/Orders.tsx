@@ -35,6 +35,7 @@ const Orders = () => {
         <div className="orderDisplay">
           {orders.map((order) => (
             <Order
+              key={order._id}
               firstName={order.firstName}
               lastName={order.lastName}
               status={order.status}

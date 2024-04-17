@@ -212,6 +212,7 @@ const Product = () => {
             onChange={handleChangeSelect}
             style={{ width: "80px" }}
             name="size"
+            defaultValue="S"
           >
             {product.size.map((s) => (
               <MenuItem value={s} key={s}>

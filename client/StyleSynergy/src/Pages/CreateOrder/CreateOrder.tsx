@@ -19,7 +19,7 @@ import { useContext } from "react";
 import { globalContext } from "../../App";
 
 const CreateOrder = () => {
-  const [input, setInput] = useState<OrderInput>({} as OrderInput);
+  const [input, setInput] = useState<OrderInput>({country : "Tunisia"} as OrderInput);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const theme = useTheme();
@@ -166,6 +166,7 @@ const CreateOrder = () => {
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
           style={InputStyle}
+          defaultValue="Tunisia"
           required
         >
           {countryList.map((c) => (

@@ -15,7 +15,7 @@ const Slide = () => {
     <div
       id="carouselExampleRide"
       className="carousel slide"
-      data-bs-ride="true"
+      data-bs-ride="carousel"
     >
       <div className="carousel-inner rounded-2">
         <div className="carousel-item active">
